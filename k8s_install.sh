@@ -55,18 +55,20 @@ EOF
 			yum -y remove docker docker.io docker-ce docker-engine
 			
 	fi
-
+##翻了个小墙
 cd /root 
 if [ ! -f hosts ];then 
 wget https://iiio.io/download/20170709/Android%E5%AE%89%E5%8D%93%E8%B7%9FLinux%E7%B3%BB%E5%88%97.zip -O hosts.zip
 unzip -Plaod.org hosts.zip
 cat hosts >> /etc/hosts
 fi
+##添加nodes
 ADD_NODES()
 {
 for i in $(kubectl get csr |grep -v Approved|awk '{print $1}' |grep csr); do kubectl certificate approve $i ; done
 kubectl get nodes
 }
+##清理集群
 Clean_all()
 {
 #关闭服务,删除文件
@@ -85,9 +87,12 @@ Clean_all()
  ip link del docker0
 
 }
+## 集群的安装
+
 #获取MASTER_IP  NODE1_IP NODE2_IP 及 Hostnamei
 #Get_Node()
 #{
+#判断IP地址是否合法
 echo -n "请分别输入1个MAsterIP和2个NodeIP，用空格分隔:  "
  read nodeips
 for nodeip in $nodeips
@@ -122,7 +127,7 @@ echo "NODE1_IP:  "$NODE1_IP "hostname: "$n1_hostname
 echo "NODE2_IP:  "$NODE2_IP "hostname: "$n2_hostname
 read -p "请核对信息是否正确，如正确请按任意键继续，如有错误请退出并重新执行该脚本"
 
-echo -n "请输入该节点是MASTER、NODE1、NODE2 ? MASTER 请输入0，NODE1请输入1，NODE2请输入2 并按确认键确认"
+echo -n "请输入该节点是MASTER、NODE1、NODE2 ?     MASTER 请输入0，   NODE1请输入1，   NODE2请输入2   并按确认键确认"
 read nodenumber
 if [ "$nodenumber" == "0" ]; then
 NODE_IP=$MASTER_IP
@@ -137,6 +142,7 @@ else
 
  	fi
 fi
+#通过用户输入的数量来完成配置（未完成）
 #}
 #echo -n "请输入NODE的数量，为保证ETCD集群的高可用性，建议您输入大于3的基数 ：  "
 #read nodex
@@ -404,7 +410,7 @@ systemctl daemon-reload
 systemctl enable etcd
 systemctl restart etcd
 ps aux|grep etcd
-sleep 10
+read -p "请等待另外两个node的etcd安装完成后，按任意键执行ETCD集群的健康检测！ "
 for ip in ${NODE_IPS}; do
   ETCDCTL_API=3 /usr/bin/etcdctl \
   --endpoints=https://${ip}:2379  \
