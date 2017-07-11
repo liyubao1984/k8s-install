@@ -1,17 +1,29 @@
 #/bin/bash
-#   本脚本为700bike李玉宝为方便K8S初学者而写的由3台机器构成的k8s集群，由于水平有限，如有不足之处请协助改正。
-#   系统环境为ubuntu 16.04 或者centos 7 ，docker 14.06 kubernetes 1.6.4 etcd 3.2.1 flannel 0.71.。
-#   注意事项:
+## 集群组件和版本
+
+# Kubernetes 1.6.4
+# Docker  17.04.0-ce
+# Etcd 3.2.1
+# Flanneld 0.7.1 vxlan 网络
+# TLS 认证通信 (所有组件，如 etcd、kubernetes master 和 node)
+# RBAC 授权
+# kubelet TLS BootStrapping
+# kubedns、dashboard、heapster (influxdb、grafana) 插件
+# harbor
+
+##注意事项:
+
 #   本k8s集群是有三台物理机构成，请先确保你有3台机器执行该操作,如果想要增加集群NODES的数量，请在参数NODE_IPS、ETCD_ENDPOINTS、ETCD_NODES中添加。
-#   当选择安装内容的时候，首先分别在三台机器上执行ETCD的安装。均完成后再在master上执行安装Master，node上执行安装Cluster。
-#   以上操作都没出现错误后，在master上执行add-nodes。
-#   最后是选择是根据需要选择是否安装Harbor。i
-#   变量说明：
-#1、使用命令head -c 16 /dev/urandom | od -An -t x | tr -d ' '生成BOOTSTRAP_TOKEN的值并替换ecf11198cb68fde328065f54563ca00b
-#2、根据自己实际情况设置SERVICE_CIDR、CLUSTER_CIDR的地址。
-#3、根据自己实际情况设置ETCD_ENDPOINTS、ETCD_NODES中ETCD集群的IP
-#4、根据自己实际情况设置CLUSTER_KUBERNETES_SVC_IP、CLUSTER_DNS_SVC_IP、CLUSTER_DNS_DOMAIN的值
-#5、请务必先做好etcd集群后再继续部署其它服务。
+#   当选择安装内容的时候，首先分别在三台机器上执行ETCD的安装。均完成后再在master上执行安装Master，node上执行安装node。
+#   以上操作都没出现错误后，在master上执行add-nodes,方可将节点加入集群
+#   最后是选择是根据需要选择是否安装Harbor。
+
+##变量说明：
+#  1、使用命令head -c 16 /dev/urandom | od -An -t x | tr -d ' '生成BOOTSTRAP_TOKEN的值并替换ecf11198cb68fde328065f54563ca00b
+#  2、根据自己实际情况设置SERVICE_CIDR、CLUSTER_CIDR的地址。
+#  3、根据自己实际情况设置ETCD_ENDPOINTS、ETCD_NODES中ETCD集群的IP
+#  4、根据自己实际情况设置CLUSTER_KUBERNETES_SVC_IP、CLUSTER_DNS_SVC_IP、CLUSTER_DNS_DOMAIN的值
+#  5、请务必先做好etcd集群后再继续部署其它服务。
 
 #判断当前用户是否为root用户
 
