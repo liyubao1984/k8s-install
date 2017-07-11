@@ -778,7 +778,7 @@ sleep 5
 /usr/bin/kubectl get componentstatuses
 
 }
-Cluster()
+Node()
 {
 #下载1.6.4的 kubelet 和 kube-proxy 二进制文件
 cd /home/k8s
@@ -1233,24 +1233,24 @@ EOF
 }
 
 
-echo -n "选择要安装的角色"Etcd","Master","Cluster","add-nodes","Harbor","cleanall":  "
+echo -n "选择要安装的角色"Etcd","Master","Node","add-nodes","Harbor","cleanall":  "
 read answer
 if [ "$answer" == "Master" ]; then
       INSTALL_KUBE
       FLANNEL_NETWORK
       Docker
       Kube_apiserver
-      Cluster
+      Node
       ADD_NODES
       DNS
       Dashboard
       HEAPSTER
 else 
-    if  [ "$answer" == "Cluster" ]; then
+    if  [ "$answer" == "Node" ]; then
 	INSTALL_KUBE
         FLANNEL_NETWORK
         Docker
-        Cluster
+        Node
     elif [ "$answer" == "add-nodes" ]; then
     	 ADD_NODES
     elif [ "$answer" == "Etcd" ]; then
