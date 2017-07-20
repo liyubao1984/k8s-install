@@ -26,7 +26,7 @@
 #5、请务必先做好etcd集群后再继续部署其它服务。
 
 # 开始进行集群的安装
-
+echo "欢迎在https://github.com/liyubao1984/k8s-install 提出宝贵意见。"
 #判断当前用户是否为root用户
     user=`whoami`
     machinename=`uname -m`
