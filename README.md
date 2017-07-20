@@ -1,4 +1,4 @@
-# kubernetes-
+# k8s_install.sh
 该脚本的作用是一键安装一个master和两个node的k8s集群。
 
 系统环境为 ubuntu 16.04 或者centos 7 docker 14.06 kubernetes 1.6.4 etcd 3.2.1 flannel 0.71 master上集成了UI
